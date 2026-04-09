@@ -58,6 +58,7 @@ export const profileApi = {
         lastName?: string
         secondName?: string
         email?: string
+        birthDate?: string
     })=> api.patch<UserResponse>("/api/profile", data),
 
     updatePassword: (data: {
