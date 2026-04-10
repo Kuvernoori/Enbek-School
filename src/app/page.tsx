@@ -1,6 +1,15 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+
 export default function HomePage() {
+    const [isAuth, setIsAuth] = useState(false)
+
+    useEffect(() => {
+        setIsAuth(!!localStorage.getItem('token'))
+    }, [])
     return (
         <>
             <style>{`
@@ -349,18 +358,24 @@ export default function HomePage() {
         }
       `}</style>
 
-            {/* шрифты */}
             <link
                 href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Golos+Text:wght@400;500;600&display=swap"
                 rel="stylesheet"
             />
 
-            {/* NAV */}
             <nav className="nav">
                 <Link href="/" className="logo">Enbek<span>·</span>School</Link>
                 <div className="nav-actions">
-                    <Link href="/login" className="btn-ghost">Войти</Link>
-                    <Link href="/register" className="btn-primary">Регистрация</Link>
+                    {isAuth ? (
+                        <Link href="/profile" className="btn-primary">
+                            Личный кабинет
+                        </Link>
+                    ) : (
+                        <>
+                            <Link href="/login" className="btn-ghost">Войти</Link>
+                            <Link href="/register" className="btn-primary">Регистрация</Link>
+                        </>
+                    )}
                 </div>
             </nav>
 
@@ -433,12 +448,17 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="cta-section">
-                <h2 className="cta-title">Начни свой путь сегодня</h2>
-                <p className="cta-sub">Присоединяйся к тысячам студентов, которые уже строят карьеру с Enbek School.</p>
-                <Link href="/register" className="btn-primary btn-large">Создать аккаунт бесплатно</Link>
-            </section>
+            {!isAuth && (
+                <section className="cta-section">
+                    <h2 className="cta-title">Начни свой путь сегодня</h2>
+                    <p className="cta-sub">
+                        Присоединяйся к тысячам студентов, которые уже строят карьеру с Enbek School.
+                    </p>
+                    <Link href="/register" className="btn-primary btn-large">
+                        Создать аккаунт бесплатно
+                    </Link>
+                </section>
+            )}
 
             {/* FOOTER */}
             <footer>
@@ -451,5 +471,5 @@ export default function HomePage() {
                 </div>
             </footer>
         </>
-    )
+    );
 }
